@@ -13,8 +13,8 @@ parser = LlamaParse(
 
 documents = parser.load_data("data/raw/Central Alarm Tasks And Procedures Manual.pdf")
 
-os.makedirs("data/processed", exist_ok=True)
-with open("data/processed/test_extraction_output.md", "w", encoding="utf-8") as f:
+os.makedirs("notebooks", exist_ok=True)
+with open("notebooks/outputs/test_extraction_output.md", "w", encoding="utf-8") as f:
     for doc in documents:
         f.write(doc.text)
         f.write("\n\n---PAGE BREAK---\n\n")

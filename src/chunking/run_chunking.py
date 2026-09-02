@@ -2,7 +2,7 @@ import os
 import json
 from src.chunking.chunker import chunk_document
 
-PROCESSED_DIR = "data/processed"
+PROCESSED_DIR = "data/processed/extractions"
 CHUNKS_DIR = "data/processed/chunks"
 
 if __name__ == "__main__":
