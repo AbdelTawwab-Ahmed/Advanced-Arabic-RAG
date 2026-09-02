@@ -1,6 +1,6 @@
-# Production-Ready-Arabic-RAG
+# Advanced Arabic RAG
 
-Production-ready RAG system for Arabic PDF data — ingestion/indexing pipeline.
+Production-Grade RAG system for intelligent information retrieval and question answering over Arabic PDF documents.
 
 ## Status
 ✅ Ingestion/indexing pipeline complete: extraction → table-aware chunking → hybrid embedding → Qdrant indexing.
