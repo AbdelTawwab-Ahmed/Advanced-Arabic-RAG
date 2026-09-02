@@ -1,0 +1,12 @@
+Query: ما هي مدة الاحتفاظ بتسجيلات المراقبة التلفزيونية؟
+-> none | The query is simple, self-contained, and directly asks for a specific fact that can be looked up.
+
+Query: بدي اعرف شغلة الكرت والبصمة كيف بتنعمل
+-> rewriting | The query is vague and informal, making it difficult to understand the user's exact intent regarding 'card and fingerprint' procedures.
+
+Query: ما هي خطوات إصدار البطاقة وما هي خطوات إلغائها؟
+-> decomposition | The query asks about two distinct sets of steps: issuing a card and canceling a card, which should be retrieved separately.
+
+Query: كيف تضمن وحدة الانذار المركزي استمرارية الأمان في البنك؟
+-> hyde | The query is abstract and conceptual, asking how a system ensures security, which would benefit from a hypothetical answer to match against document content.
+
