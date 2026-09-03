@@ -1,0 +1,12 @@
+=== retrieve_single ===
+score=0.8333 | Central Alarm Tasks And Procedures Manual | page 11
+score=0.5000 | Central Alarm Tasks And Procedures Manual | page 6
+score=0.3929 | Central Alarm Tasks And Procedures Manual | page 11
+
+=== retrieve_multi ===
+score=0.8333 | Central Alarm Tasks And Procedures Manual | page 8
+score=0.5833 | Central Alarm Tasks And Procedures Manual | page 8
+score=0.5000 | Central Alarm Tasks And Procedures Manual | page 5
+score=0.4167 | Central Alarm Tasks And Procedures Manual | page 9
+score=0.3111 | Assets and wearhouse operation Tasks and Procedures Manual | page 7
+score=0.2576 | Central Alarm Tasks And Procedures Manual | page 9
