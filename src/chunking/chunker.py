@@ -2,10 +2,13 @@ import os
 import re
 from dataclasses import dataclass
 from typing import List, Optional
+from src import config
 
-MAX_TOKENS_PER_CHUNK = 400
+
+MAX_TOKENS_PER_CHUNK = config.MAX_TOKENS_PER_CHUNK
 AVG_TOKENS_PER_WORD = 1.5
-TEXT_TITLE_MAX_WORDS = 12
+AVG_TOKENS_PER_WORD = 1.5
+TEXT_TITLE_MAX_WORDS = config.TEXT_TITLE_MAX_WORDS
 
 BOILERPLATE_TOKENS = {
     "رقم النسخة", "تاريخ الإصدار", "تاريخ آخر مراجعة",

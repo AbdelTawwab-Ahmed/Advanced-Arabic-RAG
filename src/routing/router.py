@@ -3,7 +3,7 @@ from typing import Literal, Optional
 from typing_extensions import TypedDict
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
-from langchain_google_genai import ChatGoogleGenerativeAI
+from src.llm_client import get_llm
 from langgraph.graph import StateGraph, END
 
 load_dotenv()
@@ -37,12 +37,8 @@ class RouterState(TypedDict):
     reason: Optional[str]
 
 
-def get_router_llm():
-    return ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0)
-
-
 def classify_node(state: RouterState) -> RouterState:
-    llm = get_router_llm().with_structured_output(RouteDecision)
+    llm = get_llm().with_structured_output(RouteDecision)
     decision: RouteDecision = llm.invoke(ROUTER_PROMPT.format(query=state["query"]))
     return {**state, "technique": decision.technique, "reason": decision.reason}
 

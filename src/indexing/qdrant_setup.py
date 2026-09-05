@@ -1,18 +1,16 @@
-import os
-from dotenv import load_dotenv
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams, SparseVectorParams
+from src import config
 
-load_dotenv()
 
-COLLECTION_NAME = "arabic_rag_chunks"
-DENSE_VECTOR_SIZE = 1024 
+COLLECTION_NAME = config.QDRANT_COLLECTION_NAME
+DENSE_VECTOR_SIZE = config.DENSE_VECTOR_SIZE 
 
 
 def get_qdrant_client() -> QdrantClient:
     return QdrantClient(
-        url=os.getenv("QDRANT_URL"),
-        api_key=os.getenv("QDRANT_API_KEY"),
+        url=config.QDRANT_URL,
+        api_key=config.QDRANT_API_KEY,
     )
 
 

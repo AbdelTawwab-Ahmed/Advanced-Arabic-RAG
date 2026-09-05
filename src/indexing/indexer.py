@@ -5,8 +5,10 @@ from qdrant_client.models import PointStruct, SparseVector
 
 from src.embedding.embedder import embed_dense, embed_sparse
 from src.indexing.qdrant_setup import get_qdrant_client, create_collection, COLLECTION_NAME
+from src import config
 
-UPSERT_BATCH_SIZE = 50
+
+UPSERT_BATCH_SIZE = config.QDRANT_UPSERT_BATCH_SIZE
 
 
 def deterministic_uuid(chunk_id: str) -> str:

@@ -1,13 +1,10 @@
-import os
-from dotenv import load_dotenv
 from llama_parse import LlamaParse
+from src import config
 
-load_dotenv()
 
 def get_parser() -> LlamaParse:
-    """Returns a configured LlamaParse instance for Arabic table extraction."""
     return LlamaParse(
-        api_key=os.getenv("LLAMA_CLOUD_API_KEY"),
+        api_key=config.LLAMA_CLOUD_API_KEY,
         result_type="markdown",
         language="ar",
         verbose=True,

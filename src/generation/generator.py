@@ -1,5 +1,5 @@
 from typing import List, TypedDict
-from langchain_google_genai import ChatGoogleGenerativeAI
+from src.llm_client import get_llm
 
 GENERATION_PROMPT = """You are answering questions about a bank's internal Arabic procedure \
 manuals (alarm systems, mail/files handling, warehouse operations), using ONLY the context \
@@ -23,10 +23,6 @@ class GenerationResult(TypedDict):
     answer: str
     input_tokens: int
     output_tokens: int
-
-
-def get_llm():
-    return ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0)
 
 
 def build_context(chunks: List[dict]) -> str:

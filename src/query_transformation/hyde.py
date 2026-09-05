@@ -1,4 +1,5 @@
-from langchain_google_genai import ChatGoogleGenerativeAI
+from src.llm_client import get_llm
+from src import config
 from dotenv import load_dotenv
 
 
@@ -16,11 +17,7 @@ Question: {query}
 """
 
 
-def get_llm():
-    return ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.3)
-
-
 def generate_hyde_document(query: str) -> str:
-    llm = get_llm()
+    llm = get_llm(temperature=config.TEMP_VARIED)
     response = llm.invoke(HYDE_PROMPT.format(query=query))
     return response.content.strip()

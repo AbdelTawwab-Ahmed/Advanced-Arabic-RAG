@@ -1,5 +1,6 @@
 from typing import List
-from langchain_google_genai import ChatGoogleGenerativeAI
+from src.llm_client import get_llm
+from src import config
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 
@@ -22,12 +23,8 @@ class QueryVariants(BaseModel):
     variants: List[str] = Field(description="Exactly 3 differently-phrased Arabic versions of the query.")
 
 
-def get_llm():
-    return ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.3)
-
-
 def generate_multi_queries(query: str) -> List[str]:
-    llm = get_llm().with_structured_output(QueryVariants)
+    llm = get_llm(temperature=config.TEMP_VARIED).with_structured_output(QueryVariants)
     result: QueryVariants = llm.invoke(MULTI_QUERY_PROMPT.format(query=query))
     return result.variants
 

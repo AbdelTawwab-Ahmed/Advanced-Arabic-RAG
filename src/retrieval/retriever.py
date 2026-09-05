@@ -4,6 +4,8 @@ from qdrant_client.models import SparseVector, Prefetch, FusionQuery, Fusion
 from src.embedding.embedder import embed_dense, embed_sparse
 from src.indexing.qdrant_setup import get_qdrant_client, COLLECTION_NAME
 from src.query_transformation.multi_query import dedupe_chunks
+from src import config
+
 
 InputType = Literal["search_query", "search_document"]
 
@@ -18,7 +20,7 @@ def _point_to_chunk(point) -> dict:
     }
 
 
-def retrieve_single(text: str, top_k: int = 10, input_type: InputType = "search_query") -> List[dict]:
+def retrieve_single(text: str, top_k: int = config.RETRIEVAL_TOP_K_SINGLE, input_type: InputType = "search_query") -> List[dict]:
     """
     Hybrid (dense + sparse, RRF-fused) retrieval for one piece of text.
     input_type matters: use 'search_query' for a real user question, but
@@ -45,7 +47,7 @@ def retrieve_single(text: str, top_k: int = 10, input_type: InputType = "search_
     return [_point_to_chunk(p) for p in results.points]
 
 
-def retrieve_multi(texts: List[str], top_k_per_query: int = 5) -> List[dict]:
+def retrieve_multi(texts: List[str], top_k_per_query: int = config.RETRIEVAL_TOP_K_PER_SUBQUERY) -> List[dict]:
     """
     Retrieves for each text independently, then merges into one deduplicated,
     score-sorted list. Used for Multi-Query (several phrasings of one intent)

@@ -1,0 +1,5 @@
+context_relevance: 0.9999999999
+faithfulness: 1.0
+answer_relevance: 0.6760190376159206
+correctness: 1.0
+total_cost_usd: 0.006235

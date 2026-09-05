@@ -2,7 +2,8 @@ from typing import List
 from typing_extensions import TypedDict
 from langgraph.graph import StateGraph, END
 
-from src.routing.router import get_router_llm, RouteDecision, ROUTER_PROMPT
+from src.routing.router import RouteDecision, ROUTER_PROMPT
+from src.llm_client import get_llm
 from src.query_transformation.rewriting import rewrite_query
 from src.query_transformation.multi_query import generate_multi_queries
 from src.query_transformation.decomposition import decompose_query
@@ -10,6 +11,7 @@ from src.query_transformation.hyde import generate_hyde_document
 from src.retrieval.retriever import retrieve_single, retrieve_multi
 from src.reranking.reranker import rerank_chunks
 from src.generation.generator import generate_answer
+from src import config
 
 
 class PipelineState(TypedDict):
@@ -24,7 +26,7 @@ class PipelineState(TypedDict):
 
 
 def classify_node(state: PipelineState) -> PipelineState:
-    llm = get_router_llm().with_structured_output(RouteDecision)
+    llm = get_llm().with_structured_output(RouteDecision)
     decision: RouteDecision = llm.invoke(ROUTER_PROMPT.format(query=state["query"]))
     return {**state, "technique": decision.technique, "reason": decision.reason}
 
@@ -34,38 +36,38 @@ def route_after_classify(state: PipelineState) -> str:
 
 
 def none_node(state: PipelineState) -> PipelineState:
-    chunks = retrieve_single(state["query"], top_k=15, input_type="search_query")
+    chunks = retrieve_single(state["query"], top_k=config.RETRIEVAL_TOP_K_SINGLE, input_type="search_query")
     return {**state, "retrieved": chunks}
 
 
 def rewriting_node(state: PipelineState) -> PipelineState:
     rewritten = rewrite_query(state["query"])
-    chunks = retrieve_single(rewritten, top_k=15, input_type="search_query")
+    chunks = retrieve_single(rewritten, top_k=config.RETRIEVAL_TOP_K_SINGLE, input_type="search_query")
     return {**state, "retrieved": chunks}
 
 
 def multi_query_node(state: PipelineState) -> PipelineState:
     variants = generate_multi_queries(state["query"])
-    chunks = retrieve_multi(variants, top_k_per_query=5)
+    chunks = retrieve_multi(variants, top_k_per_query=config.RETRIEVAL_TOP_K_PER_SUBQUERY)
     return {**state, "retrieved": chunks}
 
 
 def decomposition_node(state: PipelineState) -> PipelineState:
     sub_questions = decompose_query(state["query"])
-    chunks = retrieve_multi(sub_questions, top_k_per_query=5)
+    chunks = retrieve_multi(sub_questions, top_k_per_query=config.RETRIEVAL_TOP_K_PER_SUBQUERY)
     return {**state, "retrieved": chunks}
 
 
 def hyde_node(state: PipelineState) -> PipelineState:
     hyde_doc = generate_hyde_document(state["query"])
     # embedded as 'search_document', not 'search_query' — see reasoning in retriever.py
-    chunks = retrieve_single(hyde_doc, top_k=15, input_type="search_document")
+    chunks = retrieve_single(hyde_doc, top_k=config.RETRIEVAL_TOP_K_SINGLE, input_type="search_document")
     return {**state, "retrieved": chunks}
 
 
 def rerank_node(state: PipelineState) -> PipelineState:
     # always reranked against the ORIGINAL query, never the transformed one
-    reranked = rerank_chunks(state["query"], state["retrieved"], top_n=5)
+    reranked = rerank_chunks(state["query"], state["retrieved"], top_n=config.RERANK_TOP_N)
     return {**state, "reranked": reranked}
 
 

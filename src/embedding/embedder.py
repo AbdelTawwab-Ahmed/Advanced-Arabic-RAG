@@ -1,18 +1,15 @@
-import os
 import time
 from typing import List
 import cohere
 from fastembed import SparseTextEmbedding
-from dotenv import load_dotenv
+from src import config
 
-
-load_dotenv()
 
 # --- Dense (Embedding | Semantic Vectors) ---
 
-CO = cohere.Client(os.getenv("COHERE_API_KEY"))
-EMBED_MODEL = "embed-multilingual-v3.0"
-BATCH_SIZE = 96  
+CO = cohere.Client(config.COHERE_API_KEY)
+EMBED_MODEL = config.COHERE_EMBED_MODEL
+BATCH_SIZE = config.COHERE_EMBED_BATCH_SIZE
 
 
 def embed_dense(texts: List[str], input_type: str = "search_document") -> List[List[float]]:
@@ -30,14 +27,14 @@ def embed_dense(texts: List[str], input_type: str = "search_document") -> List[L
             input_type=input_type,
         )
         all_embeddings.extend(response.embeddings)
-        time.sleep(0.5)  
+        time.sleep(config.COHERE_EMBED_THROTTLE_SECONDS)  
     return all_embeddings
 
 
 # --- Sparse (Keywords Search | BM25) ---
 
 
-SPARSE_MODEL = SparseTextEmbedding(model_name="Qdrant/bm25")
+SPARSE_MODEL = SparseTextEmbedding(model_name=config.SPARSE_MODEL_NAME)
 
 
 def embed_sparse(texts: List[str]):

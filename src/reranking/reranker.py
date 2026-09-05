@@ -1,15 +1,13 @@
-import os
 import cohere
 from typing import List
-from dotenv import load_dotenv
-
-load_dotenv()
-
-CO = cohere.Client(os.getenv("COHERE_API_KEY"))
-RERANK_MODEL = "rerank-multilingual-v3.0"
+from src import config
 
 
-def rerank_chunks(query: str, chunks: List[dict], top_n: int = 5) -> List[dict]:
+CO = cohere.Client(config.COHERE_API_KEY)
+RERANK_MODEL = config.COHERE_RERANK_MODEL
+
+
+def rerank_chunks(query: str, chunks: List[dict], top_n: int = config.RERANK_TOP_N) -> List[dict]:
     """
     Reranks retrieved chunks against the ORIGINAL user query (not a transformed
     version — see note below), returning the top_n most relevant, with each

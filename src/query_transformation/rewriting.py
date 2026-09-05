@@ -1,4 +1,4 @@
-from langchain_google_genai import ChatGoogleGenerativeAI
+from src.llm_client import get_llm
 from dotenv import load_dotenv
 
 
@@ -14,10 +14,6 @@ the original intent exactly — do not add information that wasn't implied by th
 Original query: {query}
 
 Rewritten query:"""
-
-
-def get_llm():
-    return ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0)
 
 
 def rewrite_query(query: str) -> str:
