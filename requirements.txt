@@ -13,7 +13,7 @@ cffi==2.1.1
 charset-normalizer==3.5.1
 click==8.5.0
 cloudpickle==3.1.2
-cohere==7.1.1
+cohere==5.21.1
 colorama==0.4.6
 cryptography==50.0.1
 dataclasses-json==0.6.7
@@ -59,6 +59,7 @@ jsonpatch==1.33
 jsonpointer==3.1.1
 langchain==1.4.0
 langchain-classic==1.0.8
+langchain-cohere==0.6.0
 langchain-community==0.3.31
 langchain-core==1.6.1
 langchain-google-genai==4.4.0
@@ -133,6 +134,7 @@ tokenizers==0.23.2
 tqdm==4.70.0
 truststore==0.10.4
 typer==0.27.2
+types-PyYAML==6.0.12.20260815
 types-requests==2.33.0.20260712
 typing-inspect==0.9.0
 typing-inspection==0.4.4
