@@ -12,5 +12,3 @@ COPY .streamlit/ ./.streamlit/
 EXPOSE 8501
 
 CMD ["streamlit", "run", "ui/app.py", "--server.address=0.0.0.0"]
-
-# docker run -p 8501:8501 --env-file .env arabic-rag-ui

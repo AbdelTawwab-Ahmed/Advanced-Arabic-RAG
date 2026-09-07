@@ -65,10 +65,6 @@ html, body, [class*="css"], textarea, .stMarkdown, .stDataFrame {
 st.title("Arabic RAG — Evaluation UI")
 tab1, tab2 = st.tabs(["Single Question", "Batch Evaluation"])
 
-# ---------------- Citation Helper ----------------
-
-def highlight_citations(text: str) -> str:
-    return re.sub(r"\[(\d+)\]", r'<span class="citation-badge">[\1]</span>', text)
 
 # ---------------- Single Question ----------------
 with tab1:
@@ -87,24 +83,18 @@ with tab1:
             st.caption(result["reason"])
 
             st.subheader("Answer")
-            st.markdown(highlight_citations(result["answer"]), unsafe_allow_html=True)
+            st.markdown(result["answer"], unsafe_allow_html=True)
 
-            # with st.expander("Retrieved & reranked chunks"):
-            #     for c in result["reranked"]:
-            #         st.markdown(f"**{c['source_pdf']} — page {c['page_number']}** (rerank score: {c.get('rerank_score', 0):.4f})")
-            #         st.text(c["text"][:500])
-
-            st.subheader("📚 Sources")
-            st.caption("Numbers below match the [n] citations in the answer above.")
-            for i, c in enumerate(result["reranked"], 1):
-                with st.container():
-                    st.markdown(f"""
-                    <div class="source-card">
-                        <div class="source-header">[{i}] {c['source_pdf']} — page {c['page_number']}
-                        <span class="source-score">Rerank Score: {c.get('rerank_score', 0):.3f}</span></div>
-                        <div class="source-text">{c['text'][:600]}{'...' if len(c['text']) > 600 else ''}</div>
-                    </div>
-                    """, unsafe_allow_html=True)
+            with st.expander("📚 Sources"):
+                for i, c in enumerate(result["reranked"], 1):
+                    with st.container():
+                        st.markdown(f"""
+                        <div class="source-card">
+                            <div class="source-header">[{i}] {c['source_pdf']} — page {c['page_number']}
+                            <span class="source-score">Rerank Score: {c.get('rerank_score', 0):.3f}</span></div>
+                            <div class="source-text">{c['text'][:600]}{'...' if len(c['text']) > 600 else ''}</div>
+                        </div>
+                        """, unsafe_allow_html=True)
 
             cost = (result["input_tokens"] / 1_000_000 * config.GEMINI_PRICE_PER_1M_INPUT) + \
                    (result["output_tokens"] / 1_000_000 * config.GEMINI_PRICE_PER_1M_OUTPUT)
